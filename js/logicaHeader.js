@@ -14,7 +14,14 @@ export function CambiarHeader(fotoPerfil){
     if(btnRegister) btnRegister.style.display = "none";
 
     if(perfil && img){        
-        img.src = `${API_URL}` + fotoPerfil ;
+        if (!img.src) {
+            img.src = "src/SinFoto.png";
+        }
+
+        // Solo reemplaza si fotoPerfil existe y no está vacío
+        if (fotoPerfil) {
+            img.src = `${API_URL}${fotoPerfil}`;
+        }
         perfil.style.display = "block";
         receta.style.display = "block";
     }
