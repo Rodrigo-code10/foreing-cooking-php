@@ -1,0 +1,359 @@
+/* Contenedor principal */
+.formRecetas {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Título */
+.formRecetas h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #e74c3c;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Buscador */
+.Buscador {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.Buscador_recetas {
+    width: 100%;
+    padding: 15px 25px;
+    font-size: 16px;
+    border: 3px solid #c0392b;
+    border-radius: 50px;
+    box-sizing: border-box;
+    transition: all 0.3s;
+    box-shadow: 0 2px 10px rgba(231, 76, 60, 0.15);
+}
+
+.Buscador_recetas:focus {
+    outline: none;
+    border-color: #e74c3c;
+    box-shadow: 0 4px 20px rgba(231, 76, 60, 0.35);
+    transform: translateY(-2px);
+}
+
+/* Labels principales */
+.formRecetas > label {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    color: #e74c3c;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Grid botones categoría */
+.botones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.botonCategoria {
+    padding: 15px 25px;
+    border: none;
+    background: linear-gradient(135deg, #e74c3c 0%, #d35400 100%);
+    color: white;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.45);
+    position: relative;
+    overflow: hidden;
+}
+
+.botonCategoria::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(192, 57, 43, 0.4) 0%, #e74c3c 100%);
+    transition: left 0.3s;
+    z-index: 0;
+}
+
+.botonCategoria:hover::before {
+    left: 0;
+}
+
+.botonCategoria:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 25px rgba(192, 57, 43, 0.6);
+}
+
+.botonCategoria span {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Categoría seleccionada */
+.contenedorCategoria {
+    text-align: center;
+    margin-bottom: 25px;
+    min-height: 120px;
+    padding: 20px;
+    background: linear-gradient(135deg, #ffe2dd 0%, #ffb8ad 100%);
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(231, 76, 60, 0.15);
+}
+
+.contenedorCategoria img {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s;
+}
+
+.contenedorCategoria img:hover {
+    transform: scale(1.05);
+}
+
+.contenedorCategoria p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #c0392b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Etiquetas */
+.Etiquetas {
+    background: white;
+    border: 3px solid #e74c3c;
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 25px rgba(231, 76, 60, 0.18);
+}
+
+.Etiquetas > label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #e74c3c;
+    font-size: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Items de categorías */
+#Categoria {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+#Categoria label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 12px 15px;
+    border-radius: 12px;
+    transition: all 0.3s;
+    background: white;
+    border: 2px solid #f2d6d2;
+    font-weight: 500;
+    color: #444;
+}
+
+#Categoria label:hover {
+    background: linear-gradient(135deg, #ff7661 0%, #e74c3c 100%);
+    color: white;
+    border-color: #e74c3c;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.45);
+}
+
+#Categoria input[type="checkbox"] {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    accent-color: #e74c3c;
+}
+
+#Categoria input[type="checkbox"]:checked + label {
+    background: linear-gradient(135deg, #ff7661 0%, #e74c3c 100%);
+    color: white;
+}
+
+/* Estilos para la sección de Ingredientes (verde) */
+.ingredientes-seccion {
+    border-color: #27ae60 !important;
+}
+
+.ingredientes-seccion > label {
+    color: #27ae60 !important;
+}
+
+#Ingredientes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+#Ingredientes label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 12px 15px;
+    border-radius: 12px;
+    transition: all 0.3s;
+    background: white;
+    border: 2px solid #d4edda;
+    font-weight: 500;
+    color: #444;
+}
+
+#Ingredientes label:hover {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    border-color: #27ae60;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(39, 174, 96, 0.45);
+}
+
+#Ingredientes input[type="checkbox"] {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    accent-color: #27ae60;
+}
+
+#Ingredientes input[type="checkbox"]:checked + span {
+    font-weight: 600;
+}
+
+/* Contenedor */
+.selector-filtro {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: "Inter", sans-serif;
+}
+
+/* Etiqueta */
+.filtro-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* Select */
+.select-filtro {
+    padding: 10px 12px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid #d0d0d0;
+    background: #fdfdfd;
+    color: #333;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+/* Hover y enfoque */
+.select-filtro:hover {
+    border-color: #b5b5b5;
+}
+
+.select-filtro:focus {
+    border-color: #ef703a;
+    box-shadow: 0 0 0 3px rgba(200, 112, 12, 0.25);
+}
+
+/* Opciones internas */
+.select-filtro option {
+    padding: 5px;
+}
+
+/* Botón limpiar */
+.botonesBuscador {
+    margin-top: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.Limpiar {
+    padding: 15px 50px;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(192, 57, 43, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.Limpiar:hover {
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(192, 57, 43, 0.7);
+}
+
+/* Tarjetas */
+.cards {
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.otro{
+    margin-bottom: 100px;
+}
+/* Responsive */
+@media (max-width: 968px) {
+    .botones {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    #Categoria {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .formRecetas h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .formRecetas h2 {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+    .botones {
+        grid-template-columns: 1fr;
+    }
+    #Categoria {
+        grid-template-columns: 1fr;
+    }
+    .cards {
+        grid-template-columns: 1fr;
+    }
+    .Etiquetas {
+        padding: 20px 15px;
+    }
+}

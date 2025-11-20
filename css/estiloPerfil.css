@@ -1,0 +1,419 @@
+/*Perfil.php */
+body.perfil-page {
+    font-family: "Poppins", sans-serif;
+}
+
+body.perfil-page nav a:hover {
+    color: #e05b49;
+}
+
+.perfil-mini img {
+    width: 40px;
+    border-radius: 50%;
+}
+
+.perfil {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 20px;
+    margin-top: 120px;
+}
+
+.perfil-header {
+    background: linear-gradient(135deg, #f47a6a, #e05b49);
+    color: white;
+    text-align: center;
+    padding: 55px 280px;
+    border-radius: 15px;
+}
+
+.perfil-foto {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+    border: 3px solid white;
+}
+
+.perfil-header h2 {
+    font-size: 1.4em;
+    margin-bottom: 5px;
+}
+
+.perfil-header p {
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.perfil-estadisticas {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.perfil-estadisticas div {
+    text-align: center;
+    font-size: 0.85em;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+}
+
+.tab {
+    background: none;
+    border: none;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #777;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.tab:hover {
+    color: #e05b49;
+}
+
+.tab.activa {
+    color: #e05b49;
+    border-bottom: 2px solid #e05b49;
+}
+
+.perfil + .recetas {
+    margin-bottom: 40px;
+}
+
+.perfil + .recetas .contenido {
+    margin-bottom: 30px;
+}
+
+.perfil + .recetas h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.perfil + .recetas p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+body.perfil-page .cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px; 
+    justify-content: center; 
+    max-width: 960px; 
+    margin: 0 auto; 
+}
+
+body.perfil-page .card {
+    max-width: 500px;
+    width: 100%;
+    border-radius: 15px;
+}
+
+body.perfil-page .card-image {
+    height: 150px;
+}
+
+body.perfil-page .card-content {
+    padding: 15px;
+}
+
+body.perfil-page .card-rating {
+    gap: 3px;
+    margin-bottom: 8px;
+}
+
+body.perfil-page .star {
+    font-size: 1rem;
+}
+
+body.perfil-page .rating-number {
+    font-size: 0.8rem;
+    margin-left: 4px;
+}
+
+body.perfil-page .card-title {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+body.perfil-page .card-author {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+}
+
+body.perfil-page .card-info {
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+}
+
+body.perfil-page .info-icon {
+    width: 16px;
+}
+
+body.perfil-page .card-footer {
+    gap: 8px;
+    padding: 10px 15px;
+}
+
+body.perfil-page .btn-receta {
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+body.perfil-page .btn-heart {
+    padding: 6px 10px;
+    font-size: 1.1rem;
+}
+
+body.perfil-page .like-count {
+    font-size: 0.8rem;
+    min-width: 25px;
+}
+
+.btn_sesion {
+    padding: 16px 24px;
+    font-size: 14px;
+    width: 180px;
+    background-color: #190055;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;     
+    margin: 20px auto 120px;   
+}
+
+.btn_sesion:hover {
+    background-color: #0f0038;
+}
+
+.formulario-editar-perfil {
+    max-width: none;
+    width: 100%;
+    margin: 2rem 0; 
+    background: white;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-radius: 1.5rem;
+    padding: 3rem;
+    border: 1px solid #f3f4f6;
+    
+    display: block;
+    grid-column: 1 / -1;  
+    flex: 0 0 100%;     
+}
+
+.formulario-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.formulario-icono {
+    display: inline-block;
+    padding: 1rem;
+    background: #FFF5F2;
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+}
+
+.formulario-icono svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #e05b49;
+    display: block;
+}
+
+.formulario-titulo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.formulario-subtitulo {
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+#formPerfil {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.formulario-campo {
+    position: relative;
+}
+
+.formulario-label {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.75rem;
+}
+
+.formulario-label svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    color: #e05b49;
+    flex-shrink: 0;
+}
+
+.formulario-input,
+.formulario-textarea {
+    width: 100%;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.875rem;
+    padding: 1rem 1.25rem;
+    background: #f9fafb;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.formulario-input:hover,
+.formulario-textarea:hover {
+    border-color: #d1d5db;
+}
+
+.formulario-input:focus,
+.formulario-textarea:focus {
+    outline: none;
+    border-color: #e05b49;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.1);
+}
+
+.formulario-file-wrapper {
+    position: relative;
+}
+
+.formulario-file {
+    width: 100%;
+    color: #4b5563;
+    border-radius: 0.875rem;
+    border: 2px dashed #d1d5db;
+    padding: 1.25rem;
+    background: #f9fafb;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+}
+
+.formulario-file:hover {
+    border-color: #e05b49;
+    background: #f3f4f6;
+}
+
+.formulario-file::-webkit-file-upload-button {
+    margin-right: 1.25rem;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.625rem;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: #eef2ff;
+    color: #e05b49;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.formulario-file::-webkit-file-upload-button:hover {
+    background: #e0e7ff;
+}
+
+/* Firefox */
+.formulario-file::file-selector-button {
+    margin-right: 1.25rem;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.625rem;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: #eef2ff;
+    color: #e05b49;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.formulario-file::file-selector-button:hover {
+    background: #e0e7ff;
+}
+
+.formulario-ayuda {
+    font-size: 0.813rem;
+    color: #6b7280;
+    margin-top: 0.625rem;
+    margin-left: 0.25rem;
+}
+
+.formulario-textarea {
+    resize: none;
+    min-height: 120px;
+}
+
+.formulario-contador {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.formulario-contador span {
+    font-size: 0.813rem;
+    color: #9ca3af;
+}
+
+.formulario-boton {
+    width: 100%;
+    background: linear-gradient(to right, #E8534F, #bd504c);
+    color: white;
+    font-weight: 700;
+    padding: 1.125rem 1.75rem;
+    border-radius: 0.875rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    margin-top: 1rem;
+    font-size: 1.05rem;
+    font-family: inherit;
+}
+
+.formulario-boton:hover {
+    background: linear-gradient(to right, #d6312b, #a83e3a);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.formulario-boton:active {
+    transform: translateY(0);
+}
+
+.formulario-boton svg {
+    width: 1.375rem;
+    height: 1.375rem;
+    flex-shrink: 0;
+}
