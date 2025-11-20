@@ -44,7 +44,7 @@
                 <select name="dificultad" id="dificultad" required>
                     <option value="">Seleccionar...</option>
                     <option value="Fácil">Fácil</option>
-                    <option value="Medio">Medio</option>
+                    <option value="Media">Media</option>
                     <option value="Difícil">Difícil</option>
                 </select>
                 <!---Modificacion-->
