@@ -78,5 +78,6 @@
     </main>
 
     <?php include 'includes/footer.php'; ?>
+    <script type="module" src="js/logicaHeader.js"></script>
 </body>
 </html>
