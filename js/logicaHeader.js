@@ -14,7 +14,14 @@ export function CambiarHeader(fotoPerfil){
     if(btnRegister) btnRegister.style.display = "none";
 
     if(perfil && img){        
-        img.src = `${API_URL}` + fotoPerfil ;
+        const fallbackURL = "https://raw.githubusercontent.com/Rodrigo-code10/foreing-cooking-api/refs/heads/main/api/public/default/SinFoto.png"; 
+
+        img.src = `${API_URL}${fotoPerfil}`;
+        img.onerror = () => {
+            console.warn("No se pudo cargar la imagen, usando fallback");
+            img.src = fallbackURL;
+        };
+
         perfil.style.display = "block";
         receta.style.display = "block";
     }
