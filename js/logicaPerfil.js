@@ -1,5 +1,7 @@
 import API_URL from './config.js';
 import { CambiarHeader } from "./logicaHeader.js";
+import { mostrarMensaje } from './mensajes.js';
+import {cerrarSesionAutomatica} from './logicaBloqueo.js';
 
 //Funcion pa cerrar sesion
 function cerrarSesion(){
@@ -14,7 +16,7 @@ function generarEstrellas(calificacion) {
     return '★'.repeat(estrellasLlenas) + '☆'.repeat(5 - estrellasLlenas);
 }
 
-function renderizarRecetas(recetas, mostrarEliminar = false) {
+function renderizarRecetas(recetas, mostrarEliminar = false, mostrarEditar = false) {
     const recetasContainer = document.getElementById("muestra-recetas");
     recetasContainer.innerHTML = ""; // limpiar contenedor
 
@@ -52,7 +54,9 @@ function renderizarRecetas(recetas, mostrarEliminar = false) {
                     </div>
                 </div>
             </div>
+
             <div class="card-footer">
+                ${mostrarEditar ? `<button class="btn-receta editar" data-id="${receta._id}">Editar Receta</button>` : ''}
                 <button class="btn-receta" onclick="window.location.href='VerReceta.php?id=${receta._id}'">Ver Receta</button>
                 ${mostrarEliminar ? '<button class="btn-receta eliminar">Eliminar</button>' : ''}
             </div>
@@ -62,12 +66,302 @@ function renderizarRecetas(recetas, mostrarEliminar = false) {
 
         if (mostrarEliminar) {
             const btnEliminar = card.querySelector(".btn-receta.eliminar");
-            btnEliminar.addEventListener("click", () => {
-                eliminarReceta(receta._id);
-            });
+            btnEliminar.addEventListener("click", () => {eliminarReceta(receta._id);});
+        }
+
+        if (mostrarEditar) {
+            const btnEditar = card.querySelector(".btn-receta.editar");
+            btnEditar.addEventListener("click", () => editarReceta(receta._id));
         }
     });
 }
+
+async function editarReceta(id) {
+    try {
+        const response = await fetch(`${API_URL}/recetas/${id}/Ver`, {
+            headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` }
+        });
+
+        if (response.status === 403) {
+            cerrarSesionAutomatica();
+            return; 
+        }
+
+        const data = await response.json();
+
+        document.getElementById('recetaId').value = data._id;
+        document.getElementById('recetaNombre').value = data.nombre || '';
+        document.getElementById('recetaDescripcion').value = data.descripcion || '';
+        document.getElementById('recetaTiempoPreparación').value = data.tiempoPreparacion || '';
+        document.getElementById('recetaPorciones').value = data.porciones || '';
+        document.getElementById('recetaDificultad').value = data.dificultad || '';
+        const imgVista = document.getElementById('recetaImagenVista');
+
+        if (data.imagen) {
+            imgVista.src = `${API_URL}${data.imagen}`;
+        } else {
+            imgVista.src = `${API_URL}/public/default/admmin.png`;
+        }
+        
+        //Categorias
+        const categorias = data.categoria || [];
+        const checkboxes = [...document.querySelectorAll('input[name="categoria"]')];
+        const inputOtro = document.getElementById('inputOtro');
+        const chkOtro = document.getElementById('categoriaOtro');
+        
+        const predefinidas = checkboxes
+          .filter(c => c.id !== 'categoriaOtro')
+          .map(c => c.value.toLowerCase().trim());
+        
+        checkboxes.forEach(c => c.checked = false);
+        inputOtro.value = '';
+        inputOtro.disabled = true;
+        
+        // Marcar predefinidas
+        categorias.forEach(cat => {
+            const match = checkboxes.find(c => c.value.toLowerCase().trim() === cat.toLowerCase().trim());
+            if (match) match.checked = true;
+        });
+        
+        // Manejar “Otro”
+        const otras = categorias.filter(c => !predefinidas.includes(c.toLowerCase().trim()));
+        if (otras.length > 0) {
+            chkOtro.checked = true;
+            inputOtro.disabled = false;
+            inputOtro.value = otras.join(", ");
+        }
+        
+        chkOtro.replaceWith(chkOtro.cloneNode(true)); // eliminar listeners antiguos
+        const nuevoChkOtro = document.getElementById('categoriaOtro');
+        nuevoChkOtro.addEventListener('change', () => {
+            inputOtro.disabled = !nuevoChkOtro.checked;
+            if (!nuevoChkOtro.checked) inputOtro.value = "";
+        });
+
+        // Ingredientes
+        document.getElementById('recetaIngredientes').value =
+        Array.isArray(data.ingredientes) 
+            ? data.ingredientes.map(i => i.texto || i.nombre).join("\n")
+            : data.ingredientes || "";
+
+        // Pasos
+        document.getElementById('recetaInstrucciones').value =
+            Array.isArray(data.pasos) ? data.pasos.join("\n") : data.pasos || "";
+
+        // Mostrar modal
+        const modal = document.getElementById('modalReceta');
+        modal.style.display = 'block';
+        setTimeout(() => modal.classList.add('show'), 10);
+    } catch (error) {
+        console.error("Error al ver receta:", error);
+        mostrarMensaje("Error al cargar la receta", "#E01616");
+    }
+}
+
+function crearModal() {
+    const modalHTML = `
+        <div id="modalReceta" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <div class="modal-header-content">
+                        <h2>Detalles de la Receta</h2>
+                    </div>
+                    <button class="modal-close" aria-label="Cerrar"> ✖️ </button>
+                </div>
+                
+                <form id="formReceta" class="modal-form">
+                    <input type="hidden" id="recetaId">
+
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label>Nombre de la Receta</label>
+                            <input type="text" id="recetaNombre" class="input-modern" required>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Descripción</label>
+                        <textarea id="recetaDescripcion" class="textarea-modern"></textarea>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Tiempo de Preparación</label>
+                        <input type="number" id="recetaTiempoPreparación" class="input-modern" min="1">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Porciones</label>
+                        <input type="number" id="recetaPorciones" class="input-modern" min="1">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Dificultad</label>
+                        <select id="recetaDificultad" class="input-modern">
+                            <option value="">Seleccionar...</option>
+                            <option value="Fácil">Fácil</option>
+                            <option value="Media">Media</option>
+                            <option value="Difícil">Difícil</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Categoría</label>
+                        <div class="checkbox-container">
+                            <label><input type="checkbox" name="categoria" value="Saludable"> Saludable</label>
+                            <label><input type="checkbox" name="categoria" value="Nutritivo"> Nutritivo</label>
+                            <label><input type="checkbox" name="categoria" value="Grasoso"> Grasoso</label>
+                            <label><input type="checkbox" name="categoria" value="Vegetariano"> Vegetariano</label>
+                            <label><input type="checkbox" name="categoria" value="Dulce"> Dulce</label>
+                            <label><input type="checkbox" name="categoria" value="Salado"> Salado</label>
+                            <label><input type="checkbox" name="categoria" value="Picante"> Picante</label>
+                            <label><input type="checkbox" name="categoria" value="Vegana"> Vegana</label>
+                            <label><input type="checkbox" name="categoria" value="Entrada"> Entrada</label>
+                            <label><input type="checkbox" name="categoria" value="Postre"> Postre</label>
+                            <label><input type="checkbox" name="categoria" value="Plato Fuerte"> Plato Fuerte</label>
+                            <label>
+                                <input type="checkbox" id="categoriaOtro" value="">
+                                Otro:
+                                <input type="text" id="inputOtro" placeholder="Escribe tu categoría" style="margin-left:5px;" disabled>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Ingredientes</label>
+                        <textarea id="recetaIngredientes" class="textarea-modern"></textarea>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Instrucciones</label>
+                        <textarea id="recetaInstrucciones" class="textarea-modern"></textarea>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Imagen</label>
+                        <img id="recetaImagenVista" style="max-width: 300px; border-radius: 10px; display: block; margin-top: 10px;">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    const modal = document.getElementById('modalReceta');
+    const cerrar = modal.querySelector('.modal-close');
+    const form = document.getElementById('formReceta');
+
+    cerrar.addEventListener('click', cerrarModal);
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) cerrarModal();
+    });
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await guardarCambios();
+    });
+
+    function cerrarModal() {
+        modal.classList.remove('show');
+        setTimeout(() => modal.style.display = 'none', 300);
+    }
+}
+
+async function guardarCambios() {
+    const id = document.getElementById('recetaId').value;
+
+    // Recoger todas las categorías seleccionadas
+    let categoriasSeleccionadas = [...document.querySelectorAll('input[name="categoria"]:checked')].map(c => c.value);
+
+    // Si "Otro" está marcado, asegurarse de enviar su valor real
+    const chkOtro = document.getElementById("categoriaOtro");
+    const inputOtro = document.getElementById("inputOtro");
+
+    if (chkOtro.checked) {
+        const valorOtro = inputOtro.value.trim();
+        if (valorOtro) {
+            categoriasSeleccionadas.push(valorOtro); // tomar lo que dice el input
+        }
+    }
+
+    const lineasIngredientes = document.getElementById('recetaIngredientes').value
+    .split("\n")
+    .filter(linea => linea.trim() !== "");
+
+    const unidadesComunes = ["taza","tazas","cucharada","cucharadas","gramo","gramos","kg","ml","pieza","piezas"];
+
+    const ingredientes = lineasIngredientes.map(linea => {
+        const partes = linea.trim().split(" ");
+        let cantidad = null;
+        let unidad = null;
+
+        if (!isNaN(partes[0])) {
+            cantidad = Number(partes.shift());
+        }
+
+        if (partes.length && unidadesComunes.includes(partes[0].toLowerCase())) {
+            unidad = partes.shift();
+        }
+
+        const nombre = partes.join(" ").trim();
+        return {
+            nombre,      
+            cantidad,    
+            unidad,      
+            texto: linea.trim()  
+        };
+    });
+
+    const payload = {
+        nombre: document.getElementById('recetaNombre').value,
+        descripcion: document.getElementById('recetaDescripcion').value,
+        ingredientes: ingredientes,
+        pasos: document.getElementById('recetaInstrucciones').value.split("\n").filter(i => i.trim()),
+        tiempoPreparacion: document.getElementById('recetaTiempoPreparación').value,
+        porciones: document.getElementById('recetaPorciones').value,
+        dificultad: document.getElementById('recetaDificultad').value,
+        categoria: categoriasSeleccionadas,
+        estado:"pendiente"
+    };
+
+    try {
+        const response = await fetch(`${API_URL}/MisRecetas/${id}/Editar`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.status === 403) {
+            cerrarSesionAutomatica();
+            return; 
+        }
+
+        if (!response.ok) throw new Error("Error al actualizar");
+
+        mostrarMensaje("Peticion de cambios enviada", "#4CAF50");
+
+        document.getElementById("modalReceta").classList.remove("show");
+        setTimeout(() => {
+            document.getElementById("modalReceta").style.display = "none";
+        }, 300);
+
+        setTimeout(() => {
+            location.reload();
+        }, 2000);
+
+    } catch (error) {
+        mostrarMensaje("Error al guardar cambios", "#E01616");
+    }
+}
+
 
 // Función para cargar perfil y recetas propias
 async function cargarPerfil(usuario) {
@@ -79,7 +373,7 @@ async function cargarPerfil(usuario) {
     try {
         const response = await fetch(`${API_URL}/muestrarecetas?autor=${usuario.id}`);
         const recetas = await response.json();
-        renderizarRecetas(recetas, true);
+        renderizarRecetas(recetas, true,true);
         document.getElementById("recetas-creadas").innerHTML = recetas.length;
     } catch (error) {
         console.error("Error al cargar recetas del usuario:", error);
@@ -91,23 +385,17 @@ async function cargarPerfil(usuario) {
         const responseFav = await fetch(`${API_URL}/obtenerfavoritos`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
+
+        if (responseFav.status === 403) {
+            cerrarSesionAutomatica();
+            return; 
+        }
+
         const recetasFav = await responseFav.json();
         document.getElementById("Favoritas").innerHTML = recetasFav.length || 0;
     } catch (error) {
         console.error("Error al cargar favoritos:", error);
         document.getElementById("Favoritas").innerHTML = 0;
-    }
-
-    // Cargar seguidores
-    try {
-        const responseSeg = await fetch(`${API_URL}/obtenerseguidores`, {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        });
-        const listseguidores = await responseSeg.json();
-        document.getElementById("Seguidores").innerHTML = listseguidores.length || 0;
-    } catch (error) {
-        console.error("Error al cargar seguidores:", error);
-        document.getElementById("Seguidores").innerHTML = 0;
     }
 }
 
@@ -117,8 +405,13 @@ async function Favoritos() {
         const responseFav = await fetch(`${API_URL}/obtenerfavoritos`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
+
+        if (responseFav.status === 403) {
+            cerrarSesionAutomatica();
+            return; 
+        }
         const recetasFav = await responseFav.json();
-        renderizarRecetas(recetasFav, true); 
+        renderizarRecetas(recetasFav); 
     } catch (error) {
         console.error("Error al cargar favoritos:", error);
         document.getElementById("muestra-recetas").innerHTML = "<p>Error al cargar favoritos.</p>";
@@ -134,6 +427,12 @@ async function eliminarReceta(id) {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
+        
+        if (response.status === 403) {
+            cerrarSesionAutomatica();
+            return; 
+        }
+
         if (!response.ok) throw new Error("Error al eliminar receta");
         window.location.reload();
     } catch (error) {
@@ -221,18 +520,22 @@ async function ConfigPerfil() {
             formData.append("id", usuario.id);
 
             try {
-                const res = await fetch(`${API_URL}/editarperfil`, {
+                const response = await fetch(`${API_URL}/editarperfil`, {
                     method: "PUT",
                     body: formData,
                     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
                 });
+                
+                if (response.status === 403) {
+                    cerrarSesionAutomatica();
+                    return; 
+                }
+
                 const data = await res.json();
 
                 if (data.success) {
-                    alert("Perfil actualizado correctamente");
+                    mostrarMensaje("Perfil actualizado correctamente",'#4CAF50');
                     
-                    // CORRECCIÓN: Actualizar el usuario en localStorage y recargar la página
-                    // para que los cambios se reflejen inmediatamente
                     const usuarioActualizado = {
                         ...usuario,
                         nombre: data.usuario.nombre,
@@ -244,11 +547,11 @@ async function ConfigPerfil() {
                     // Recargar la página actual en lugar de redirigir
                     window.location.reload();
                 } else {
-                    alert("Error al actualizar perfil: " + (data.message || ""));
+                    mostrarMensaje("Error al actualizar perfil: " + (data.message || ""),' #E01616');
                 }
             } catch (err) {
                 console.error(err);
-                alert("Error en la conexión con el servidor");
+                mostrarMensaje("Error en la conexión con el servidor",' #E01616');
             }
         });
 
@@ -259,16 +562,25 @@ async function ConfigPerfil() {
 
 // Inicialización al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
+    crearModal();
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    if (!usuario) return;
+    if (!usuario) {
+        // Si no hay usuario, redirigir inmediatamente
+        window.location.href = 'index.php';
+        return;
+    }
 
     CambiarHeader(usuario.foto);
     cargarPerfil(usuario);
 
     // Botón cerrar sesión
     const btnCerrarSesion = document.querySelector(".btn_sesion");
-    if(btnCerrarSesion) btnCerrarSesion.addEventListener("click", cerrarSesion);
-
+    if(btnCerrarSesion) {
+        console.log("Botón encontrado"); // Debug
+        btnCerrarSesion.addEventListener("click", cerrarSesion);
+    } else {
+        console.error("No se encontró el botón de cerrar sesión"); // Debug
+    }
     // Pestañas
     const tabs = document.querySelectorAll(".tabs .tab");
     tabs.forEach((tab, index) => {
@@ -276,7 +588,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tabs.forEach(t => t.classList.remove("activa"));
             tab.classList.add("activa");
 
-            if (index === 0) cargarPerfil(usuario); // Mis Recetas
+            if (index === 0)  cargarPerfil(usuario); // Mis Recetas
             else if (index === 1) Favoritos();       // Mis Favoritos
             else if (index === 2) ConfigPerfil(); //Configuraciones
         });

@@ -1,3 +1,4 @@
+/* ===== RESET Y ESTILOS BASE ===== */
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +11,27 @@ body {
     overflow-x: hidden;
 }
 
-/*Navegar*/
+body:not(.auth-page) {
+    background-color: #FFEFE9;
+    display: flex;
+    flex-direction: column;
+    padding-top: 100px;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+section {
+    padding: 30px;
+}
+
+.highlight {
+    color: #e8544f;
+}
+
+/* ===== NAVEGACIÓN ===== */
 nav {
     display: flex;
     justify-content: space-around;
@@ -32,6 +53,33 @@ nav a {
     font-size: 1.2rem;
 }
 
+/* Menu hamburguesa */
+.menu-toggle {
+    display: none;
+}
+
+.menu-toggle span {
+    width: 30px;
+    height: 3px;
+    background-color: #2C2C2C;
+    margin: 4px 0;
+    transition: 0.3s;
+    border-radius: 3px;
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* ===== BOTONES ===== */
 .btn-primary {
     padding: 10px 20px;
     color: white;
@@ -61,6 +109,7 @@ nav a {
     color: #e32620;
 }
 
+/* ===== FOOTER ===== */
 footer {
     background-color: #2C2C2C;
     color: #fff;
@@ -71,29 +120,24 @@ footer {
     bottom: 0;
     left: 0;
     width: 100%;
+    display: flex;              
+    align-items: center;       
+    justify-content: center;    
+    gap: 20px;                  
 }
 
-body:not(.auth-page) {
-    background-color: #FFEFE9;
-    display: flex;
-    flex-direction: column;
-    padding-top: 100px;
+footer img {
+    width: 35px;               
+    height: 35px;
+    vertical-align: middle;    
+    transition: transform 0.3s;
 }
 
-main {
-    flex: 1;
-    padding: 20px;
+footer img:hover {
+    transform: scale(1.2);     
 }
 
-section {
-    padding: 30px;
-}
-
-.highlight {
-    color: #e8544f;
-}
-
-/*index.html*/
+/* ===== INDEX - SECCIÓN TÍTULO ===== */
 .section-title {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -112,47 +156,33 @@ section {
     line-height: 1.6;
 }
 
-.imagen {
-    text-align: center;
-    background-color: #EE7F58;
-    padding: 30px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.imagen img {
-    width: 100%;
-    max-width: 300px;
-    border-radius: 10px;
-}
-
 .buttons {
     display: flex;
     gap: 15px;
     margin-top: 20px;
 }
 
-.ultimas-recetas {
-    margin-bottom: 50px;
+/* ===== ÚLTIMAS RECETAS ===== */
+.ultimas-recetas, .mejores-recetas, .viejas-recetas {
+    margin-bottom: 60px;
 }
 
-.ultimas-recetas .contenido {
+.ultimas-recetas, .mejores-recetas, .viejas-recetas .contenido {
     margin-bottom: 40px;
 }
 
-.ultimas-recetas h1 {
+.ultimas-recetas, .mejores-recetas, .viejas-recetas  h1 {
     font-size: 36px;
     margin-bottom: 10px;
 }
 
-.ultimas-recetas p {
+.ultimas-recetas, .mejores-recetas, .viejas-recetas  p {
     color: #666;
     font-size: 1rem;
 }
 
-.cards {
+/* ===== CARDS ===== */
+.cards, .mejores-cards, .viejas-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
@@ -302,7 +332,69 @@ section {
     text-align: right;
 }
 
-/*iniciaroregistrarse.html*/
+/* ===== CALIFICACIÓN ===== */
+.calificacion-usuario {
+    margin-top: 20px;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.calificacion-usuario p {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: 5px 0 0 0;
+    color: #666;
+    text-align: center;
+    width: 100%;
+}
+
+.estrellas-clickeables {
+    display: flex;
+    gap: 8px;
+    font-size: 2rem;
+    justify-content: flex-start;
+}
+
+.estrellas {
+    color: #FFC107;
+}
+
+.estrella-clickeable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #ddd;
+    user-select: none;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.estrella-clickeable:hover {
+    transform: scale(1.3);
+    filter: drop-shadow(0 0 8px rgba(232, 83, 79, 0.5));
+}
+
+.estrella-clickeable:active {
+    transform: scale(1.1);
+}
+
+.receta-calificacion {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.receta-calificacion .estrellas {
+    font-size: 1.5rem;
+}
+
+.receta-calificacion .calificacion-numero {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* ===== PÁGINA DE AUTENTICACIÓN ===== */
 body.auth-page {
     background-color: #2C2C2C;
     padding-top: 0;
@@ -538,8 +630,7 @@ body.auth-page {
     transform: translate(-50%, 0);
     max-width: 450px;
     width: auto;
-    transition: opacity 0.4s ease,
-        left 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+    transition: opacity 0.4s ease, left 0.8s cubic-bezier(0.76, 0, 0.24, 1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -558,17 +649,8 @@ body.auth-page {
     display: none;
 }
 
-.login-content {
-    display: flex;
-}
-
 .login-content.fade-out {
     opacity: 0;
-}
-
-.register-content {
-    display: none;
-    left: 20%;
 }
 
 .register-content.fade-out {
@@ -583,35 +665,85 @@ body.auth-page {
     display: flex;
 }
 
+/* Elementos móviles ocultos en desktop */
+.mobile-logo,
+.mobile-switch-btn {
+    display: none;
+}
 
+/* ===== ANIMACIONES ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* ===== MEDIA QUERIES ===== */
+
+/* Tablets (max-width: 968px) */
 @media (max-width: 968px) {
-    .cards {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .section-title {
-        grid-template-columns: 1fr;
-    }
-
-    section {
-        padding: 60px 20px;
-    }
-
+    /* Navegación */
     nav {
-        flex-wrap: wrap;
-        height: auto;
-        padding: 10px;
+        padding: 10px 20px;
+        height: 80px;
     }
 
     nav a {
         font-size: 1rem;
     }
 
-    .contenido h1 {
-        font-size: 32px;
+    #logo {
+        width: 70px;
+        height: 70px;
     }
 
+    .btn-primary,
+    .btn-secondary {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+        padding: 15px 10px;
+        font-size: 16px;
+    }
+
+    /* Index */
+    .section-title {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .contenido h1 {
+        font-size: 36px;
+    }
+
+    .slider-box {
+        max-width: 100%;
+    }
+
+    /* Cards */
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    /* Autenticación */
     .auth-container,
     .auth-container.register-mode {
         grid-template-columns: 1fr;
@@ -664,166 +796,420 @@ body.auth-page {
     }
 }
 
+/* Móviles (max-width: 768px) */
 @media (max-width: 768px) {
-    header {
-        flex-wrap: wrap;
+    /* Navegación */
+    nav {
+        height: 70px;
+        padding: 0 15px;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .cards {
-        grid-template-columns: 1fr 1fr;
+    nav > a:first-child {
+        order: 1;
     }
-    
-    nav {
+
+    #logo {
+        width: 60px;
         height: 60px;
-        padding: 8px;
     }
-    
-    nav a {
+
+    .menu-toggle {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 10px;
+        z-index: 15;
+        order: 2;
+    }
+
+    nav > a:not(:first-child),
+    #perfil-container {
+        display: none !important;
+    }
+
+    nav.active {
+        height: auto;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    nav.active > a:first-child {
+        align-self: flex-start;
+    }
+
+    nav.active .menu-toggle {
+        position: absolute;
+        top: 5px;
+        right: 15px;
+    }
+
+    nav.active #perfil-container[style*="display: block"],
+    nav.active #perfil-container[style*="display:block"] {
+        display: block !important;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0 10px 0;
+        order: 1;
+        border-bottom: 2px solid #e0e0e0;
+    }
+
+    nav.active #perfil-container[style*="display: none"],
+    nav.active #perfil-container[style*="display:none"] {
+        display: none !important;
+    }
+
+    nav.active > a:not(:first-child):not([style*="display:none"]):not([style*="display: none"]) {
+        display: block !important;
+        order: 2;
+        width: 100%;
+        text-align: center;
+        padding: 15px 0;
+        font-size: 1.1rem;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    nav.active .btn-primary,
+    nav.active .btn-secondary {
+        width: 90%;
+        margin: 10px auto;
+        display: block;
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    #perfil-foto {
+        width: 70px;
+        height: 70px;
+    }
+
+    body:not(.auth-page) {
+        padding-top: 70px;
+    }
+
+    /* Footer */
+    footer {
+        padding: 12px 10px;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    /* Index */
+    .section-title {
+        padding: 20px 10px;
+    }
+
+    .contenido {
+        padding: 0 10px;
+    }
+
+    .contenido h1 {
+        font-size: 28px;
+    }
+
+    .contenido p {
         font-size: 0.9rem;
     }
-    
-    .perfil {
-        margin-top: 70px;
-    }
-    
-    body.perfil-page .cards {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-    }
-    
-    body.perfil-page .card {
-        max-width: 100%;
-    }
-    
-    body.perfil-page .card-image {
-        height: 120px;
-    }
-    
-    .perfil-estadisticas {
-        gap: 30px;
-    }
-    
-    .tabs {
-        gap: 20px;
-    }
-}
 
-@media (max-width: 600px) {
-    nav {
+    .buttons {
         flex-direction: column;
-    }
-
-    .Formulario_Receta {
-        width: 95%;
-        padding: 25px;
-    }
-
-    .botones {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .botones button {
         width: 100%;
     }
 
-    .form-section,
+    .buttons button {
+        width: 100%;
+    }
+
+    .ultimas-recetas {
+        padding: 20px 10px;
+    }
+
+    .ultimas-recetas h1 {
+        font-size: 28px;
+    }
+
+    /* Cards */
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .card {
+        max-width: 100%;
+    }
+
+    .card-image {
+        height: 200px;
+    }
+
+    .card-content {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+    }
+
+    .card-info {
+        flex-wrap: wrap;
+        gap: 10px;
+        font-size: 0.85rem;
+    }
+
+    .card-footer {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .btn-receta {
+        width: 100%;
+    }
+
+    .slider-box {
+        height: 300px;
+    }
+
+    /* Autenticación */
+    body.auth-page {
+        background: linear-gradient(135deg, #EE7964 0%, #E8534F 100%);
+    }
+
+    .auth-container {
+        grid-template-columns: 1fr;
+        position: relative;
+        min-height: 100vh;
+        background-color: transparent;
+        padding: 20px;
+    }
+
+    #loginForm,
+    #registerForm {
+        grid-column: 1;
+        grid-row: 1;
+        padding: 100px 30px 30px 30px;
+        min-height: calc(100vh - 40px);
+        width: 100%;
+        position: relative;
+        background-color: #FFF5F2;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    #loginForm {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: auto;
+        z-index: 2;
+    }
+
+    #registerForm {
+        opacity: 0;
+        transform: translateX(100%);
+        pointer-events: none;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        width: calc(100% - 40px);
+        z-index: 1;
+    }
+
+    .auth-container.register-mode #loginForm {
+        opacity: 0;
+        transform: translateX(-100%);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .auth-container.register-mode #registerForm {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: auto;
+        z-index: 2;
+    }
+
+    .form-section h2 {
+        font-size: 32px;
+        text-align: center;
+        color: #2C2C2C;
+        margin-top: 0;
+    }
+
+    .form-section .subtitle {
+        font-size: 14px;
+        text-align: center;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .mobile-logo {
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+        display: block !important;
+    }
+
+    .mobile-logo img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
     .welcome-section {
-        padding: 40px 20px;
+        display: none !important;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    .input-group input {
+        padding: 16px 16px 16px 50px;
+        font-size: 15px;
+    }
+
+    .submit-btn {
+        padding: 14px 40px;
+        font-size: 15px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .mobile-switch-btn {
+        display: block !important;
+        text-align: center;
+        margin-top: 20px;
+        padding: 12px;
+        background-color: transparent;
+        color: #E8534F;
+        border: 2px solid #E8534F;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+    }
+
+    .mobile-switch-btn:hover {
+        background-color: #E8534F;
+        color: white;
+    }
+}
+
+/* Móviles pequeños (max-width: 600px) */
+@media (max-width: 600px) {
+    /* Navegación */
+    nav {
+        height: 60px;
+    }
+
+    #logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    #perfil-foto {
+        width: 65px;
+        height: 65px;
+    }
+
+    .menu-toggle span {
+        width: 25px;
+    }
+
+    body:not(.auth-page) {
+        padding-top: 60px;
+    }
+
+    /* Footer */
+    footer {
+        padding: 10px 8px;
+        font-size: 12px;
+        line-height: 1.3;
+    }
+
+    /* Index */
+    .contenido h1 {
+        font-size: 24px;
+    }
+
+    .ultimas-recetas h1 {
+        font-size: 24px;
+    }
+
+    /* Cards */
+    .card-image {
+        height: 180px;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .card-info {
+        font-size: 0.8rem;
+    }
+
+    .slider-box {
+        height: 250px;
+    }
+
+    /* Autenticación */
+    .auth-container {
+        padding: 15px;
+    }
+
+    #loginForm,
+    #registerForm {
+        padding: 90px 20px 20px 20px;
+        min-height: calc(100vh - 30px);
+        border-radius: 15px;
+    }
+
+    #registerForm {
+        top: 15px;
+        left: 15px;
+        right: 15px;
+        width: calc(100% - 30px);
     }
 
     .form-section h2 {
         font-size: 28px;
     }
 
-    .welcome-section h1 {
-        font-size: 32px;
+    .mobile-logo {
+        top: 20px;
     }
 
-    .logo-image {
-        width: 100px;
-        height: 100px;
+    .mobile-logo img {
+        width: 60px;
+        height: 60px;
     }
-}
-/* Animación del mensaje de éxito */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
-.calificacion-usuario {
-    margin-top: 20px;
-    padding: 15px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
+    .input-group input {
+        padding: 14px 14px 14px 45px;
+        font-size: 14px;
+    }
 
-.calificacion-usuario p {
-    font-size: 0.85rem;
-    font-weight: 500;
-    margin: 5px 0 0 0;
-    color: #666;
-    text-align: center;
-    width: 100%;
-}
+    .input-group::before {
+        left: 14px;
+        width: 18px;
+        height: 18px;
+    }
 
-.estrellas-clickeables {
-    display: flex;
-    gap: 8px;
-    font-size: 2rem;
-    justify-content: flex-start;
-}
-.estrellas{
-    color: #FFC107;
-}
+    .submit-btn {
+        padding: 12px 30px;
+        font-size: 14px;
+    }
 
-
-.estrella-clickeable {
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #ddd;
-    user-select: none;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.estrella-clickeable:hover {
-    transform: scale(1.3);
-    filter: drop-shadow(0 0 8px rgba(232, 83, 79, 0.5));
-}
-
-.estrella-clickeable:active {
-    transform: scale(1.1);
-}
-
-/* Layout de la calificación en verReceta */
-.receta-calificacion {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-
-.receta-calificacion .estrellas {
-    font-size: 1.5rem;
-}
-
-.receta-calificacion .calificacion-numero {
-    font-size: 1rem;
-    color: #666;
-}
-
-/* Animación del mensaje de éxito */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    .mobile-switch-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
 }

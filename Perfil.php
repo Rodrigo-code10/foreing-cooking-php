@@ -7,8 +7,8 @@
     <title>Perfil de Usuario - Foreign Cooking</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="css/estiloPerfil.css">
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 
 <body class="perfil-page">
@@ -23,7 +23,6 @@
             <p id="descripcion">...</p>
             <div class="perfil-estadisticas">
                 <div><strong id="recetas-creadas"></strong><br>Recetas Creadas</div>
-                <div><strong id="Seguidores"></strong><br>Seguidores</div>
                 <div><strong id="Favoritas"></strong><br>Favoritas</div>
             </div>
         </div>

@@ -2,7 +2,7 @@ import API_URL from './config.js';
 
 //// FUNCIÓN PARA CAMBIAR HEADER ////
 
-export function CambiarHeader(fotoPerfil){
+export function CambiarHeader(fotoPerfil,rol){
     const btnLogin = document.getElementById("btn-login");
     const btnRegister = document.getElementById("btn-register");
     const perfil = document.getElementById("perfil-container");
@@ -16,7 +16,12 @@ export function CambiarHeader(fotoPerfil){
     if(perfil && img){        
         img.src = `${API_URL}` + fotoPerfil ;
         perfil.style.display = "block";
-        receta.style.display = "block";
+        receta.href="CrearRecetas.php";
+    }
+
+    const panel = document.getElementById("PanelAdmin");
+    if(rol=='admin'){
+        panel.style.display = "block";
     }
 }
 
@@ -24,6 +29,6 @@ export function CambiarHeader(fotoPerfil){
 document.addEventListener("DOMContentLoaded", () => {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     if(usuario && usuario.foto){
-        CambiarHeader(usuario.foto);
+        CambiarHeader(usuario.foto,usuario.rol);
     }
 });

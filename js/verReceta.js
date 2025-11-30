@@ -1,4 +1,6 @@
 import API_URL from './config.js';
+import { mostrarMensaje} from './mensajes.js';
+import {cerrarSesionAutomatica} from './logicaBloqueo.js';
 
 let recetaIdActual = null;
 let miCalificacionActual = 0;
@@ -11,7 +13,7 @@ if (recetaId) {
     recetaIdActual = recetaId;
     cargarReceta(recetaId);
 } else {
-    alert('No se especificó una receta');
+    mostrarMensaje('No se especificó una receta','#E01616');
     window.location.href = 'index.php';
 }
 
@@ -27,7 +29,7 @@ async function cargarReceta(id) {
         mostrarReceta(receta);
     } catch (error) {
         console.error('Error al cargar la receta:', error);
-        alert('Error al cargar la receta: ' + error.message);
+        mostrarMensaje('Error al cargar la receta: ' + error.message, '#E01616');
         window.location.href = 'CatalogoRecetas.php';
     }
 }
@@ -42,6 +44,11 @@ async function cargarMiCalificacion(id) {
                 'Authorization': `Bearer ${token}`
             }
         });
+
+        if (response.status === 403) {
+                    cerrarSesionAutomatica();
+                    return; 
+        }
 
         if (response.ok) {
             const data = await response.json();
@@ -125,7 +132,7 @@ function mostrarReceta(receta) {
             const li = document.createElement('li');
             li.innerHTML = `
                 <span class="ingrediente-icono"></span>
-                <span>${ingrediente}</span>
+                <span>${ingrediente.texto}</span>
             `;
             listaIngredientes.appendChild(li);
         });
@@ -217,7 +224,7 @@ async function enviarCalificacion(puntuacion) {
     try {
         const token = localStorage.getItem('token');
         if (!token) {
-            alert('Debes iniciar sesión para calificar');
+            mostrarMensaje('Debes iniciar sesión para calificar','#C7A414');
             window.location.href = 'IniciarRegistrarse.php?mode=login';
             return;
         }
@@ -231,10 +238,15 @@ async function enviarCalificacion(puntuacion) {
             body: JSON.stringify({ puntuacion })
         });
 
+        if (response.status === 403) {
+            cerrarSesionAutomatica();
+            return; 
+        }
+
         const data = await response.json();
 
         if (!response.ok) {
-            alert(data.error || 'Error al calificar');
+            mostrarMensaje(data.error || 'Error al calificar','#E01616');
             return;
         }
 
@@ -250,31 +262,12 @@ async function enviarCalificacion(puntuacion) {
         actualizarEstrellasVisuales(estrellas, data.calificacion);
 
         // Mensaje de éxito
-        mostrarMensajeExito('¡Calificación guardada!');
+        mostrarMensaje('¡Calificación guardada!','#4CAF50');
 
     } catch (error) {
         console.error('Error al calificar:', error);
-        alert('Error al enviar calificación');
+        mostrarMensaje('Error al enviar calificación','#E01616');
     }
-}
-
-function mostrarMensajeExito(mensaje) {
-    const div = document.createElement('div');
-    div.textContent = mensaje;
-    div.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #4CAF50;
-        color: white;
-        padding: 15px 25px;
-        border-radius: 5px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        z-index: 1000;
-        animation: fadeIn 0.3s, fadeOut 0.3s 2.5s;
-    `;
-    document.body.appendChild(div);
-    setTimeout(() => div.remove(), 3000);
 }
 
 function cambiarImagenPrincipal(src, miniaturaElement) {
@@ -297,7 +290,7 @@ async function darLike() {
     try {
         const token = localStorage.getItem('token');
         if (!token) {
-            alert('Debes iniciar sesión para dar like');
+            mostrarMensaje('Debes iniciar sesión para dar like','#C7A414');
             window.location.href = 'IniciarRegistrarse.php?mode=login';
             return;
         }
@@ -309,6 +302,11 @@ async function darLike() {
                 'Content-Type': 'application/json'
             }
         });
+
+        if (response.status === 403) {
+            cerrarSesionAutomatica();
+            return; 
+        }
 
         const contentType = response.headers.get('content-type');
         let data;
@@ -323,7 +321,7 @@ async function darLike() {
 
         if (!response.ok) {
             console.error('Error del servidor:', data);
-            alert(data.error || 'Error al dar like');
+            mostrarMensaje(data.error || 'Error al dar like','#E01616');
             return;
         }
 
@@ -332,6 +330,6 @@ async function darLike() {
 
     } catch (error) {
         console.error('Error al dar like:', error);
-        alert('Ocurrió un error al dar like');
+        mostrarMensaje('Ocurrió un error al dar like','#E01616');
     }
 }

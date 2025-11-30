@@ -1,6 +1,9 @@
 import API_URL from './config.js';
 import { CambiarHeader } from "./logicaHeader.js";
+import { mostrarMensaje, mostrarMensajeBloqueo } from './mensajes.js';
+
 //// REGISTRO ////
+const dominiosPermitidos = ["gmail.com", "hotmail.com", "outlook.com"];
 document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.querySelector("#registerForm form");
     if(registerForm){
@@ -12,11 +15,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const password = document.getElementById('register_password').value;
 
             if(nombre.length < 3){
-                alert("El nombre debe tener al menos 3 caracteres");
+                mostrarMensaje("El nombre debe tener al menos 3 caracteres",'#C7A414');
                 return;
             }
+
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!regex.test(email)){
+                mostrarMensaje("Formato de correo inválido",'#E01616');
+                return;
+            }
+
+            const dominio = email.split("@")[1].toLowerCase();
+            if(!dominiosPermitidos.includes(dominio)){
+                mostrarMensaje(`Solo se permiten correos de: ${dominiosPermitidos.join(", ")}`,'#E01616');
+                return;
+            }
+
             if(password.length < 6){
-                alert("La contraseña debe tener al menos 6 caracteres");
+                mostrarMensaje("La contraseña debe tener al menos 6 caracteres",'#C7A414');
                 return;
             }
 
@@ -43,15 +59,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Actualizar header
                 CambiarHeader(data.usuario.foto);
 
-                alert("¡Registro exitoso! Bienvenido " + data.usuario.nombre);
+                mostrarMensaje(`¡Registro exitoso! Bienvenido ${data.usuario.nombre}!`,'#4CAF50');
 
                 // Redirigir después de mostrar cambios
                 setTimeout(() => {
                     window.location.href = 'index.php';
-                }, 500);
+                }, 1000);
 
             }catch(err){
-                alert("Error: " + err.message);
+                mostrarMensaje(`Error: ${err.message}`,'#E01616');
                 if(submitBtn){
                     submitBtn.disabled = false;
                     submitBtn.textContent = "Registrarse";
@@ -72,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const password = document.getElementById('login_password')?.value;
 
             if(!email || !password){
-                alert("Por favor completa todos los campos");
+                mostrarMensaje("Por favor completa todos los campos",'#C7A414');
                 return;
             }
 
@@ -96,17 +112,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 CambiarHeader(data.usuario.foto);
 
-                alert("¡Bienvenido " + data.usuario.nombre + "!");
+                mostrarMensaje(`¡Bienvenido ${data.usuario.nombre} !`,'#4CAF50');
 
-                setTimeout(() => {
-                    window.location.href = 'index.php';
-                }, 500);
+                if (data.usuario.rol == 'admin'){
+                    setTimeout(() => {
+                        window.location.href = 'PanelAdministrativo.php';
+                    }, 1000);
+    
+                }else {
+                    setTimeout(() => {
+                        window.location.href = 'index.php';
+                    }, 1000);
+                }
 
             }catch(err){
-                alert("Error: " + err.message);
-                if(submitBtn){
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = "Iniciar Sesión";
+                if (err.message.includes("desactivada")) {
+                    mostrarMensajeBloqueo(err.message, '#E8534F');
+                    setTimeout(() => {
+                        window.location.href = "index.php";
+                    }, 1000); 
+                } else {
+                    mostrarMensaje(`Error: ${err.message}`, '#E01616'); 
                 }
             }
         });

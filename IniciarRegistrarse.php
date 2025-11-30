@@ -9,6 +9,10 @@
 </head>
 
 <body class="auth-page">
+    <a href="index.php" class="mobile-logo">
+        <img src="src/Logo.png" alt="Foreign Cooking Logo" />
+    </a>
+
     <div class="auth-container" id="authContainer">
         <!-- FORMULARIO DE LOGIN -->
         <div class="form-section" id="loginForm">
@@ -23,6 +27,7 @@
                 </div>
                 <button type="submit" class="submit-btn">Iniciar Sesión</button>
             </form>
+            <button class="mobile-switch-btn" onclick="toggleAuth()">¿No tienes cuenta? Registrarse</button>
         </div>
 
         <!-- FORMULARIO DE REGISTRO -->
@@ -41,6 +46,7 @@
                 </div>
                 <button type="submit" class="submit-btn">Registrarse</button>
             </form>
+            <button class="mobile-switch-btn" onclick="toggleAuth()">¿Ya tienes cuenta? Iniciar Sesión</button>
         </div>
 
         <!-- SECCIÓN DE BIENVENIDA -->

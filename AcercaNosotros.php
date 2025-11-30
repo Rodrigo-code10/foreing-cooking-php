@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="css/estiloAcercaNosotros.css">
+    <link rel="stylesheet" href="css/estilo.css">
     <title>Acerca de nosotros</title>
 </head>
 <body>
@@ -29,7 +31,7 @@
             
             <div class="card">
                 <h3>Nuestra Comunidad</h3>
-                <p>Más de 10,000 personas están conectadas, utilizando y aprovechando nuestra plataforma para compartir sus creaciones culinarias.</p>
+                <p>Más de 10  personas están conectadas, utilizando y aprovechando nuestra plataforma para compartir sus creaciones culinarias.</p>
             </div>
             
             <div class="card">
@@ -46,24 +48,24 @@
         <section class="contenedor-cartas">
             <div class="card">
                 <h3>Gmail</h3>
-                <p>rruiz@gs.utm.mx</p>
+                <p>cookingf868@gmail.com</p>
             </div>
 
             <div class="card">
                 <h3>Soporte</h3>
-                <p>rodrigo@gmail.com</p>
+                <p>rodrigo.rolandogs@gmail.com</p>
             </div>
 
             <div class="card">
                 <h3>Telefono</h3>
-                <p>951-394-24-09</p>
+                <p>951-418-52-75</p>
             </div>
         </section>
 
         <section class="contacto">
-            <h2>A quien va dirigida la pagina</h2>
+            <h2>A quien va dirigida la página</h2>
             <div class="contacto-info">
-             <p>
+            <p>
                 Bienvenido a este rincón donde los sabores viajan sin pasaporte.
                 Aquí, cada receta es un mapa y cada plato, un destino.
 

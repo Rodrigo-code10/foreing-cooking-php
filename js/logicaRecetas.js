@@ -1,4 +1,5 @@
 import API_URL from './config.js';
+import { mostrarMensaje } from './mensajes.js';
 
 // Función para generar estrellas visuales
 function generarEstrellas(calificacion) {
@@ -6,7 +7,7 @@ function generarEstrellas(calificacion) {
     return '★'.repeat(estrellasLlenas) + '☆'.repeat(5 - estrellasLlenas);
 }
 
-export async function mostrarRecetas(filtros = {}) {
+export async function mostrarRecetas(contenedorSelector,filtros = {}) {
     try {
         const queryString = new URLSearchParams(filtros).toString();
         const url = `${API_URL}/muestrarecetas${queryString ? `?${queryString}` : ''}`;
@@ -14,17 +15,25 @@ export async function mostrarRecetas(filtros = {}) {
         const response = await fetch(url);
         const recetas = await response.json();
 
-        const contenedor = document.querySelector('.cards');
+        const contenedor = document.querySelector(contenedorSelector);
         contenedor.innerHTML = ''; // Limpiar contenedor antes de cargar
 
         recetas.forEach(receta => {
             const card = document.createElement('div');
             card.classList.add('card');
 
+            const hoy = new Date();
+            const fechaCreacion = new Date(receta.fechaCreacion);
+
+            const esNueva =
+                fechaCreacion.getDate() === hoy.getDate() &&
+                fechaCreacion.getMonth() === hoy.getMonth() &&
+                fechaCreacion.getFullYear() === hoy.getFullYear();
+
             card.innerHTML = `
                 <div class="card-image">
                     <img src="${API_URL}${receta.imagen}" alt="${receta.nombre}">
-                    <span class="card-badge">Nuevo</span>
+                    ${esNueva ? '<span class="card-badge">Nuevo</span>' : ''}
                 </div>
 
                 <div class="card-content">
@@ -78,7 +87,7 @@ export async function toggleLike(recetaId) {
     try {
         const token = localStorage.getItem('token');
         if (!token) {
-            alert('Debes iniciar sesión para dar like');
+            mostrarMensaje('Debes iniciar sesión para dar like','#C7A414');
             return;
         }
 
@@ -89,6 +98,11 @@ export async function toggleLike(recetaId) {
                 'Content-Type': 'application/json'
             }
         });
+
+        if (response.status === 403) {
+            cerrarSesionAutomatica();
+            return; 
+        }
 
         const contentType = response.headers.get('content-type');
         let data;
@@ -102,7 +116,7 @@ export async function toggleLike(recetaId) {
 
         if (!response.ok) {
             console.error('Error del servidor:', data);
-            alert(data.error || 'Error al dar like');
+            mostrarMensaje(data.error || 'Error al dar like','#E01616');
             return;
         }
 
@@ -110,6 +124,6 @@ export async function toggleLike(recetaId) {
 
     } catch (error) {
         console.error('Error en toggleLike:', error);
-        alert('Ocurrió un error al dar like');
+        mostrarMensaje('Ocurrió un error al dar like','#E01616');
     }
 }

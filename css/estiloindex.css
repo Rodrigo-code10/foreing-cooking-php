@@ -1,0 +1,46 @@
+.slider-box {
+    width: 700px;
+    height: 400px;
+    margin: 50px auto 0;
+    overflow: hidden;
+    position: relative;
+    border: 6px solid #E8534F;
+    border-radius: 20px;
+}
+
+.slider-box ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.slider-box li {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.slider-box li.active {
+    opacity: 1;
+}
+
+.slider-box img {
+    width: 100%;
+    height: 100%; 
+    object-fit: cover;
+    display: block;
+    border-radius: 16px;
+}
+
+@media(max-width: 991px) {
+    .slider-box {
+        width: 100%;
+    }
+}
